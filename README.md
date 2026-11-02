@@ -10,10 +10,6 @@ turns taps on the screen into Home Assistant events.
 > The protocol was reverse engineered from packet captures, so parts of its
 > behavior may remain unknown or incomplete.
 
-> [!WARNING]
-> This integration is untested on physical tablets so far. It has only been
-> verified against a simulated tablet.
-
 ```text
 hass-eink-dashboard ─image entity─> automation ─eink_server.upload_image─┐
                                                                           v
