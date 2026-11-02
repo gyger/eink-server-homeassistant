@@ -112,7 +112,7 @@ async def test_full_then_partial_then_delivered(setup) -> None:
     assert (primitive.x, primitive.y, primitive.width, primitive.height) == (
         10,
         5,
-        2,
+        4,
         1,
     )
     assert seq2 == seq + 1
@@ -141,7 +141,7 @@ async def test_one_frame_in_flight(setup) -> None:
     assert (primitive.x, primitive.y, primitive.width, primitive.height) == (
         10,
         5,
-        2,
+        4,
         1,
     )
 
@@ -310,7 +310,7 @@ async def test_partial_after_echo_on_same_connection(setup) -> None:
     gateway.publish(UUID_TEXT, _frame(dot=(5, 2)))
     _, _, primitive = await tablet.image()
 
-    assert (primitive.width, primitive.height) == (2, 1)
+    assert (primitive.width, primitive.height) == (4, 1)
 
 
 async def test_first_frame_is_preencoded(setup, monkeypatch) -> None:

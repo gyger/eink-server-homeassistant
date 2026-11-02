@@ -110,6 +110,14 @@ def changed_region(current: Frame, base: bytes | None) -> Primitive:
     if top is None:
         return full
 
+    # Joan 6 silently drops primitives with an odd pixel byte count, e.g.
+    # 74×109 (37 bytes × 109 rows); widen by one byte to keep it even.
+    if (right - left + 1) * (bottom - top + 1) % 2:
+        if right + 1 < row:
+            right += 1
+        elif left > 0:
+            left -= 1
+
     span = right - left + 1
     pixels = b"".join(
         current.packed[y * row + left : y * row + left + span]

@@ -91,7 +91,7 @@ def test_restore_keeps_id_and_pixels() -> None:
 
 
 def test_changed_region() -> None:
-    """Only the changed rectangle is sent, with even X and width."""
+    """Only the changed rectangle is sent, with even X and byte count."""
     blank = _render(Image.new("L", (16, 8), 255), 16, 8)
     dot = Image.new("L", (16, 8), 255)
     dot.putpixel((5, 2), 0)
@@ -99,9 +99,22 @@ def test_changed_region() -> None:
 
     region = changed_region(changed, blank.packed)
 
-    # Upright (5,2) is wire (10,5); byte 5 covers pixels 10-11.
-    assert (region.x, region.y, region.width, region.height) == (10, 5, 2, 1)
-    assert region.pixels == bytes([0xF0])
+    # Upright (5,2) is wire (10,5); byte 5 covers pixels 10-11, byte 6 pads.
+    assert (region.x, region.y, region.width, region.height) == (10, 5, 4, 1)
+    assert region.pixels == bytes([0xF0, 0xFF])
+
+
+def test_changed_region_even_bytes() -> None:
+    """Odd pixel byte counts are widened; Joan 6 drops them unacked."""
+    blank = _render(Image.new("L", (16, 8), 255), 16, 8)
+    for x in (0, 5, 15):
+        dot = Image.new("L", (16, 8), 255)
+        dot.putpixel((x, 2), 0)
+
+        region = changed_region(_render(dot, 16, 8), blank.packed)
+
+        assert len(region.pixels) % 2 == 0
+        assert region.width * region.height // 2 == len(region.pixels)
 
 
 def test_changed_region_falls_back_to_full() -> None:
