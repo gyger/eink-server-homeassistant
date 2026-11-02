@@ -1,0 +1,44 @@
+upload_image:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: eink_server
+    image:
+      required: true
+      selector:
+        media:
+          accept:
+            - image/*
+    additional_fields:
+      collapsed: true
+      fields:
+        fit:
+          required: false
+          default: "contain"
+          selector:
+            select:
+              translation_key: fit
+              options:
+                - "contain"
+                - "cover"
+                - "stretch"
+        rotation:
+          required: false
+          default: 0
+          selector:
+            number:
+              min: 0
+              max: 270
+              step: 90
+              mode: slider
+        refresh:
+          required: false
+          default: "partial"
+          selector:
+            select:
+              translation_key: refresh
+              options:
+                - "partial"
+                - "full"

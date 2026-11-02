@@ -1,0 +1,117 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_service%]",
+      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "port": "[%key:common::config_flow::data::port%]"
+        },
+        "data_description": {
+          "port": "TCP port the tablets are configured to connect to."
+        }
+      }
+    }
+  },
+  "entity": {
+    "event": {
+      "touch": {
+        "name": "Touch",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "tap": "Tap"
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "content": {
+        "name": "Content"
+      }
+    },
+    "sensor": {
+      "delivery": {
+        "name": "Delivery",
+        "state": {
+          "pending": "Pending",
+          "sent": "Sent",
+          "acknowledged": "Acknowledged",
+          "delivered": "Delivered",
+          "failed": "Failed"
+        }
+      },
+      "last_seen": {
+        "name": "Last seen"
+      }
+    }
+  },
+  "exceptions": {
+    "invalid_device_id": {
+      "message": "Device {device_id} is not a loaded eink-server tablet."
+    },
+    "media_download_error": {
+      "message": "Failed to download image: {error}"
+    },
+    "tablet_never_connected": {
+      "message": "The tablet has not connected yet, so its panel size is unknown."
+    },
+    "unsupported_image": {
+      "message": "The image format is not supported."
+    },
+    "url_not_allowed": {
+      "message": "URL {url} is not in allowlist_external_urls."
+    }
+  },
+  "selector": {
+    "fit": {
+      "options": {
+        "contain": "Contain",
+        "cover": "Cover",
+        "stretch": "Stretch"
+      }
+    },
+    "refresh": {
+      "options": {
+        "full": "Full",
+        "partial": "Partial"
+      }
+    }
+  },
+  "services": {
+    "upload_image": {
+      "name": "Upload image",
+      "description": "Makes an image the tablet's desired frame. It is sent when the tablet is connected.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "Target tablet."
+        },
+        "image": {
+          "name": "Image",
+          "description": "Media item, camera, image entity, or allowlisted URL."
+        },
+        "fit": {
+          "name": "Fit",
+          "description": "How the image maps onto the panel when sizes differ."
+        },
+        "rotation": {
+          "name": "Rotation",
+          "description": "Clockwise rotation in degrees, e.g. 90 for portrait mounting."
+        },
+        "refresh": {
+          "name": "Refresh",
+          "description": "Partial redraws only the changed area; full redraws the whole panel."
+        }
+      },
+      "sections": {
+        "additional_fields": {
+          "name": "Image options"
+        }
+      }
+    }
+  }
+}

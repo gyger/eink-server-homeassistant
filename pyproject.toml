@@ -1,0 +1,25 @@
+[project]
+name = "eink-server-homeassistant"
+version = "0.0.0"
+description = "Home Assistant integration hosting Joan/Visionect PV3 tablets"
+requires-python = ">=3.14.2"
+dependencies = []
+
+[dependency-groups]
+# Pins pytest and the matching homeassistant release.
+dev = ["pytest-homeassistant-custom-component"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP", "SIM", "I"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["custom_components"]
+combine-as-imports = true

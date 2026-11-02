@@ -1,0 +1,15 @@
+{
+  "domain": "eink_server",
+  "name": "eink-server",
+  "after_dependencies": ["media_source"],
+  "codeowners": ["@gyger"],
+  "config_flow": true,
+  "dependencies": ["http"],
+  "documentation": "https://github.com/gyger/eink-server-homeassistant",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/gyger/eink-server-homeassistant/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.3.0"
+}

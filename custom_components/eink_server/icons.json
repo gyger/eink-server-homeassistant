@@ -1,0 +1,28 @@
+{
+  "entity": {
+    "event": {
+      "touch": {
+        "default": "mdi:gesture-tap"
+      }
+    },
+    "image": {
+      "content": {
+        "default": "mdi:tablet"
+      }
+    },
+    "sensor": {
+      "delivery": {
+        "default": "mdi:image-sync",
+        "state": {
+          "delivered": "mdi:image-check",
+          "failed": "mdi:image-remove"
+        }
+      }
+    }
+  },
+  "services": {
+    "upload_image": {
+      "service": "mdi:image-move"
+    }
+  }
+}
