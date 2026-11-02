@@ -11,5 +11,5 @@
   "issue_tracker": "https://github.com/gyger/eink-server-homeassistant/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "0.3.1"
+  "version": "0.3.2"
 }

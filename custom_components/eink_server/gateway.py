@@ -370,14 +370,22 @@ class Gateway:
                 wire = await asyncio.get_running_loop().run_in_executor(
                     None, _encode, session.status.uuid, seq, frame, base
                 )
-            _LOGGER.debug(
-                "%s: sending frame %08x seq=%d partial=%s bytes=%d",
-                session.uuid,
-                frame.id,
-                seq,
-                base is not None,
-                len(wire),
-            )
+            if _LOGGER.isEnabledFor(logging.DEBUG):
+                # Rectangle helps correlate unacked partials with geometry.
+                region = changed_region(frame, base)
+                _LOGGER.debug(
+                    "%s: sending frame %08x seq=%d partial=%s bytes=%d "
+                    "rect=%d,%d %dx%d",
+                    session.uuid,
+                    frame.id,
+                    seq,
+                    base is not None,
+                    len(wire),
+                    region.x,
+                    region.y,
+                    region.width,
+                    region.height,
+                )
 
             try:
                 await session.write(wire)
