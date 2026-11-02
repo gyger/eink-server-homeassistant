@@ -130,6 +130,27 @@ async def test_upload_and_deliver(
 
 
 @pytest.mark.usefixtures("image_url")
+async def test_identical_image_skipped(
+    hass: HomeAssistant, entry: MockConfigEntry, connect: Connect
+) -> None:
+    """Re-rendering the same pixels keeps the displayed frame."""
+    await _setup(hass, entry)
+    tablet = await connect()
+    await tablet.status(kind=1)
+    await settle(lambda: hass.states.async_entity_ids("sensor"))
+    await _upload(hass, entry)
+    _, frame_id, _ = await tablet.image()
+    await tablet.status(kind=3, display_state=frame_id)
+    await settle(lambda: _state(hass, "sensor", "delivery") == "delivered")
+
+    await _upload(hass, entry)
+    await hass.async_block_till_done()
+
+    assert entry.runtime_data.tablets[UUID_TEXT].frame.id == frame_id
+    assert _state(hass, "sensor", "delivery") == "delivered"
+
+
+@pytest.mark.usefixtures("image_url")
 async def test_frame_survives_restart(
     hass: HomeAssistant, entry: MockConfigEntry, connect: Connect
 ) -> None:

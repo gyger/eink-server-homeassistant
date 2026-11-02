@@ -96,6 +96,12 @@ class Hub:
         frame = await self._hass.async_add_executor_job(
             render, image, tablet.width, tablet.height, fit, rotation, refresh
         )
+
+        # A re-render with unchanged pixels would redraw the whole panel,
+        # because an empty changed region falls back to full size.
+        if _unchanged(tablet.frame, frame):
+            return
+
         tablet.frame = frame
         self._gateway.publish(uuid, frame)
         self._save()
@@ -164,6 +170,14 @@ class Hub:
     def _dump(self) -> dict[str, Any]:
         """Serialize tablets; frames persist as their preview PNG."""
         return {uuid: _serialize(tablet) for uuid, tablet in self.tablets.items()}
+
+
+def _unchanged(current: Frame | None, new: Frame) -> bool:
+    """True for a partial frame showing the same pixels; full forces a redraw."""
+    if current is None or new.refresh == Refresh.FULL:
+        return False
+
+    return current.packed == new.packed
 
 
 def _serialize(tablet: Tablet) -> dict[str, Any]:
